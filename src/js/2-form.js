@@ -10,7 +10,7 @@ const formData = {
 const formDataFromLS = JSON.parse(localStorage.getItem(FORM_KEY_LS));
 
 if (formDataFromLS) {
-  formData.email = formRef.elements.email.value = formDataFromLS.email;
+  formData.emails = formRef.elements.emails.value = formDataFromLS.email;
   formData.message = formRef.elements.message.value = formDataFromLS.message;
 }
 
@@ -32,8 +32,6 @@ const handleSubmit = event => {
     alert('Fill please all fields');
     return;
   }
-
-  console.log(formData);
 
   event.currentTarget.reset();
   localStorage.removeItem(FORM_KEY_LS);

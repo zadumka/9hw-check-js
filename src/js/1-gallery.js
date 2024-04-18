@@ -1,6 +1,5 @@
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
-
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const images = [
   {
@@ -68,22 +67,22 @@ const images = [
   },
 ];
 
-const galleryContainer = document.querySelector(".gallery");
+const galleryContainer = document.querySelector('.garllery');
 
-const createMarkup = images.map(({ preview, original, description }) => {
-    return (`
+const createMarkup = images
+  .map(({ preview, original }) => {
+    return `
         <li class="gallery-item">
             <a class="gallery-link" href=${original}>
                 <img class="gallery-image" src=${preview} alt=${description} />
             </a>
-        </li>`)
-}).join('');
-        
-galleryContainer.insertAdjacentHTML("beforeend", createMarkup);
+        </li>`;
+  })
+  .join('');
 
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: "alt",
-  captionsDelay: 250
+galleryContainer.insertAdjacentHTML('beforeend', createMarkup);
+
+const lightbox = new SimpleLightbox('.garllery a', {
+  captionsData: 'alt',
+  captionsDelay: 250,
 });
-
-

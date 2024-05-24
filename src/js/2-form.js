@@ -1,41 +1,59 @@
-const formRef = document.querySelector('.feedback-form');
+'use strict';
 
-const FORM_KEY_LS = 'feedback-form-state';
+const form = document.querySelector('.feedback-form');
+const labels = document.querySelectorAll('.feedback-form label');
+const emailInput = form.querySelector('input[name="email"]');
+const messageTextarea = form.querySelector('textarea[name="message"]');
+const button = document.querySelector('button');
 
-const formData = {
-  email: '',
-  message: '',
+labels.forEach(label => {
+    label.classList.add('form-label');
+});
+emailInput.classList.add('form-input');
+messageTextarea.classList.add('form-textarea');
+button.classList.add('form-button');
+
+// =======================================
+
+let formData = {
+    email: "",
+    message: ""
 };
 
-const formDataFromLS = JSON.parse(localStorage.getItem(FORM_KEY_LS));
-
-if (formDataFromLS) {
-  formData.emails = formRef.elements.emails.value = formDataFromLS.email;
-  formData.message = formRef.elements.message.value = formDataFromLS.message;
+// Збереження formData в локальне сховище
+function addToLocalStorage() {
+    localStorage.setItem('formText', JSON.stringify(formData));
 }
 
-const handleInput = event => {
-  const form = event.currentTarget;
-  const email = form.elements.email.value;
-  const message = form.elements.message.value;
+// Заповнення форми
+function fillFromLocalStorage() {
+    const savedData = localStorage.getItem('formText');
+    if (savedData) {
+        formData = JSON.parse(savedData);
+        emailInput.value = formData.email;
+        messageTextarea.value = formData.message;
+    }
+}
 
-  formData.email = email;
-  formData.message = message;
+// Обробка input
+form.addEventListener('input', (event) => {
+    formData[event.target.name] = event.target.value;
+    addToLocalStorage();
+});
 
-  localStorage.setItem(FORM_KEY_LS, JSON.stringify(formData));
-};
+// Обробка submit
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
 
-const handleSubmit = event => {
-  event.preventDefault();
+    if (!formData.email || !formData.message) {
+        alert('Fill please all fields');
+    } else {
+     
+        localStorage.removeItem('formText');
+        formData = { email: "", message: "" };
+        form.reset();
+    }
+});
 
-  if (!formData.email || !formData.message) {
-    alert('Fill please all fields');
-    return;
-  }
-
-  event.currentTarget.reset();
-  localStorage.removeItem(FORM_KEY_LS);
-};
-
-formRef.addEventListener('input', handleInput);
-formRef.addEventListener('submit', handleSubmit);
+// Заповнення при завантаженні
+window.addEventListener('load', fillFromLocalStorage);

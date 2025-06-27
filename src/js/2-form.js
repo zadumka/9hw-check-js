@@ -1,4 +1,4 @@
-const formData = {
+const formData = {Add commentMore actions
     email: "",
     message: "",
 }
@@ -26,8 +26,6 @@ function localData() {
         formMessage.value = formData.message;
     }
 }
-
-localData();
 
 form.addEventListener("submit", (event) => {
     event.preventDefault()

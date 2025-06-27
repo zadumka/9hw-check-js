@@ -1,4 +1,5 @@
-'use strict';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css"
 
 const images = [
   {
@@ -66,39 +67,34 @@ const images = [
   },
 ];
 
-import simpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
+const galleryElem = document.querySelector('.gallery')
 
-const gallery = document.querySelector('.gallery');
+function imageTemplate(image){
+  return `<li class="gallery-item">
+    <a class="gallery-link" href="${image.original}">
+      <img
+        class="gallery-image"
+        src="${image.preview}"
+        alt="${image.description}"
+      />
+    </a>
+  </li>`;
 
-// розмітка для одного зображення
-function imageTemplate(imgObj) {
-    return `<li class="gallery-item">
-  <a class="gallery-link" href=${imgObj.original} onclick="event.preventDefault()">
-    <img
-      class="gallery-image"
-      src=${imgObj.preview}
-      alt=${imgObj.description}
-       />
-  </a>
-</li>`;
-};
+}
 
-// масив розмітки для галереї
-function imagesTemplate(arr) {
-  return arr.map(imageTemplate).join('\n');
-};
-    
-    // розмітка для галереї
-const markup = imagesTemplate(images);
-gallery.innerHTML = markup;
+function imagesTemplate(images){  imageTemplate
+  return images.map(imageTemplate).join(' ');
+}
 
-const lightbox = new simpleLightbox('.gallery-item a', {
-    captions: true,
-    captionSelector: 'img',
-    captionType: 'attr',
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
+function renderGallery() {
+  const markup = imagesTemplate(images)
+  galleryElem.innerHTML = markup;
+}
+
+renderGallery();
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
 });
-

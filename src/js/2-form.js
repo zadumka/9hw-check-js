@@ -1,42 +1,33 @@
-const formData = {Add commentMore actions
-    email: "",
-    message: "",
+let formData = {
+  email: '',
+  message: '',
+};
+
+const form = document.querySelector('.feedback-form');
+
+const localStorageKey = 'feedback-form-state';
+
+const saved = localStorage.getItem(localStorageKey);
+if (saved) {
+  formData = JSON.parse(saved);
+  form.email.value = formData.email || '';
+  form.message.value = formData.message || '';
 }
 
-const form = document.querySelector(".feedback-form");
-const formEmail = form.elements.email;
-const formMessage = form.elements.message;
-const key = "feedback-form-state";
+form.addEventListener('input', ev => {
+  formData[ev.target.name] = ev.target.value.trim();
+  localStorage.setItem(localStorageKey, JSON.stringify(formData));
+});
 
-form.addEventListener("input", (event) => {
-    const { name, value } = event.target;
-    if (name === "email" || name === "message") {
-      formData[name] = value.trim();
-      localStorage.setItem(key, JSON.stringify(formData));
-    }
-  });
+form.addEventListener('submit', ev => {
+  ev.preventDefault();
+  const email = ev.target.email.value;
+  const message = ev.target.message.value;
+  if (email === '' || message === '') {
+    return alert('Fill please all fields');
+  }
 
-function localData() {
-    const storage = localStorage.getItem(key);
-    if (storage) {
-        const parsedData = JSON.parse(storage);
-        formData.email = parsedData.email || "";
-        formData.message = parsedData.message || "";
-        formEmail.value = formData.email;
-        formMessage.value = formData.message;
-    }
-}
-
-form.addEventListener("submit", (event) => {
-    event.preventDefault()
-    if (!formData.email || !formData.message) {
-        alert("Fill please all fields");
-        return;
-    }
-    console.log(formData);   
-
-    localStorage.removeItem(key);
-    formData.email = "";
-    formData.message = "";
-    form.reset();
-})
+  localStorage.removeItem(localStorageKey);
+  console.log(formData);
+  form.reset();
+});
